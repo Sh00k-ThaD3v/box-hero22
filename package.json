@@ -1,0 +1,128 @@
+{
+  "name": "boxhero-electron",
+  "productName": "BoxHero",
+  "version": "1.0.5",
+  "description": "Simple Inventory Management Solution",
+  "main": "out/electron/main.js",
+  "devDependencies": {
+    "@babel/core": "7.15.5",
+    "@babel/preset-env": "7.15.6",
+    "@babel/preset-react": "7.14.5",
+    "@types/i18next-node-fs-backend": "2.1.1",
+    "@types/lodash.debounce": "4.0.6",
+    "@types/react": "17.0.27",
+    "@types/react-dom": "17.0.9",
+    "@types/styled-components": "5.1.14",
+    "@typescript-eslint/eslint-plugin": "4.33.0",
+    "@typescript-eslint/parser": "4.33.0",
+    "awesome-typescript-loader": "5.2.1",
+    "css-loader": "6.3.0",
+    "dotenv": "10.0.0",
+    "electron": "^15.1.1",
+    "electron-builder": "22.11.11",
+    "electron-builder-notarize": "1.2.0",
+    "eslint": "7.32.0",
+    "eslint-config-prettier": "8.3.0",
+    "eslint-plugin-react": "7.26.1",
+    "eslint-plugin-react-hooks": "4.2.0",
+    "file-loader": "6.2.0",
+    "html-webpack-plugin": "4",
+    "nodemon": "2.0.13",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-i18next": "11.12.0",
+    "style-loader": "2.0.0",
+    "styled-components": "5.3.1",
+    "ts-loader": "9.2.6",
+    "typescript": "4.0.3",
+    "webpack": "4.44.2",
+    "webpack-bundle-analyzer": "3.9.0",
+    "webpack-cli": "4.0.0",
+    "webpack-dev-server": "3.11.0"
+  },
+  "scripts": {
+    "postinstall": "electron-builder install-app-deps",
+    "clean": "rm -rf out dist",
+    "compile": "webpack && tsc",
+    "watch-ts": "tsc -w",
+    "watch-webpack": "NODE_ENV=development webpack -w",
+    "watch-electron": "nodemon -w out --exec 'NODE_ENV=development electron .'",
+    "watch": "./watch.sh",
+    "build": "yarn run compile",
+    "release": "yarn run clean && yarn run compile && electron-builder --mac --windows --publish always"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bgpworks/boxhero-electron.git"
+  },
+  "author": "BoxHero, Inc.",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bgpworks/boxhero-electron/issues"
+  },
+  "build": {
+    "generateUpdatesFilesForAllChannels": true,
+    "appId": "com.bgpworks.boxhero-mac",
+    "files": [
+      "out",
+      "locales",
+      "static"
+    ],
+    "mac": {
+      "target": [
+        "zip",
+        {
+          "target": "dmg",
+          "arch": "universal"
+        }
+      ],
+      "identity": "BGPworks (AXBF9WS5F5)",
+      "type": "distribution",
+      "category": "public.app-category.business",
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false
+    },
+    "dmg": {
+      "sign": false,
+      "artifactName": "${productName}-${version}.${ext}"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "ia32",
+            "x64"
+          ]
+        }
+      ],
+      "icon": "./build/icon.ico"
+    },
+    "nsis": {
+      "artifactName": "${productName}-${version}.${ext}"
+    },
+    "afterSign": "electron-builder-notarize",
+    "publish": [
+      {
+        "provider": "s3",
+        "bucket": "boxhero-autoupdate",
+        "acl": "public-read"
+      },
+      {
+        "provider": "github",
+        "owner": "bgpworks",
+        "repo": "boxhero-electron"
+      }
+    ]
+  },
+  "homepage": "https://www.boxhero-app.com/",
+  "dependencies": {
+    "electron-differential-updater": "4.3.2",
+    "electron-log": "4.4.1",
+    "i18next": "21.2.4",
+    "i18next-node-fs-backend": "2.1.3",
+    "lodash.debounce": "4.0.8"
+  }
+}

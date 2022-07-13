@@ -1,0 +1,14 @@
+/dist
+/cert
+out
+node_modules
+.#*
+.DS_Store
+*~
+.*.swp
+*.bak
+/.env
+.awcache
+/last-bundle-info.html
+/locales/**/*.missing.json
+/package-lock.json
